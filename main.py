@@ -26,7 +26,7 @@ def extract_categories_url():
 def extract_book_data(url):
     """
     Récupérer la liste des infos d'un  livre
-    """
+    """""
     # product_page_url
     data = {}
     product_page_url = requests.get(url)
