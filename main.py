@@ -1,10 +1,10 @@
+
 import csv
 import requests
 from bs4 import BeautifulSoup
-from requests.models import Response
 
 
-url = 'http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html'
+url = 'http://books.toscrape.com'
 
 
 def extract_url(url):
@@ -19,8 +19,7 @@ def extract_categories_url():
         'http://books.toscrape.com/catalogue/category/books_1/index.html']
     for list_categories in extract_url(url).find('ul', class_="nav").find_all('a', href=True):
         category_url.append(url + list_categories['href'])
-    # return category_url
-    print(category_url)
+    return category_url
 
 
 def extract_book_data(url):
@@ -30,8 +29,7 @@ def extract_book_data(url):
     # product_page_url
     data = {}
     product_page_url = requests.get(url)
-
-    soup = BeautifulSoup(product_page_url.text, 'html.parser')
+    soup = BeautifulSoup(product_page_url.content, 'html.parser')
     # universal_ product_code (upc)
     data["universal_product_code"] = soup.select("td")[0].text
     universal_product_code = soup.select("td")[0].text
@@ -73,44 +71,33 @@ def extract_book_data(url):
     return data
 
 
-# open the file in the write mode
-
 def register_books_data(books_list):
 
+    # with open('test.csv', 'w') as f:
+    #     f.write("product_page_url, universal_ product_code, title, price_including_tax,number_available, product_description, category, review_rating\n")
+    #     for link in books_list:
+    #         print(link)
+
+    # with open('test.csv', 'r') as f:
+    #     for book in f:
+    #         print(book)
+
     with open('test.csv', 'w') as f:
-        # créé le redacteur csv
+        book_url = []
+        book_data = extract_book_data(book_url)
+        w = csv.DictWriter(f, book_data.keys())
+        w.writeheader(("product_page_url", "universal_ product_code", "title", "price_including_tax", "number_available", "product_description",
+                       "category", "review_rating"))
+        for book_url in books_list:
+            w.writerow(books_list)
 
-        # def register_books_data(books_list):
-
-        #     with open('test.csv', 'w') as f:
-        #         # créé le redacteur csv
-        #         for book_url in books_list:
-        #             book_data = extract_book_data(book_url)
-        #             w = csv.DictWriter(f, book_data.keys())
-        #             w.writeheader()
-        #             w.writerow(book_data)
-        #             f.write(book_data['product_page_url'] + ";" +
-        #                     book_data['universal_ product_code'] + ";" +
-        #                     book_data['title'] + ";" +
-        #                     book_data['price_including_tax'] + ";" +
-        #                     book_data['price_excluding_tax'] + ";" +
-        #                     book_data['number_available'] + ";" +
-        #                     book_data['product_description'] + ";" +
-        #                     book_data['category'] + ";" +
-        #                     book_data['universal_ product_code'] + ";" +
-        #                     book_data['review_rating'] + "/n")
-
-        f.close
-        # ecrire dans le fichier csv
-        # w.writerow(book_data)
+        if __name__ == "__main__":
+            list_categories_url = extract_categories_url()
+            print(list_categories_url)
 
 
-if __name__ == "__main__":
-    list_categories_url = extract_categories_url()
-    print(list_categories_url)
-
-    books_list = [
-        "http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html",
-        "http://books.toscrape.com/catalogue/tipping-the-velvet_999/index.html",
-    ]
-    books_data = register_books_data(books_list)
+books_list = [
+    "http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html",
+    "http://books.toscrape.com/catalogue/tipping-the-velvet_999/index.html",
+]
+books_data = register_books_data(books_list)
