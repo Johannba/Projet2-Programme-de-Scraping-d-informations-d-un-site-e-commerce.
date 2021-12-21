@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 
 # requet pour parser url
 
-
 def extract_url(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')

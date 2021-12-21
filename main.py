@@ -3,7 +3,7 @@ from book import extract_url
 
 URL = "http://books.toscrape.com"
 
-# Recupérés tous les liens des categories
+# Recupérés tous les liens de toutes les  categories
 
 
 def full_category(url):
@@ -17,8 +17,7 @@ def full_category(url):
         all_category.append(url)
     return all_category
 
-# Boucles tous les liens des categorie et crer le fichier complet de tous les livres
-
+# Boucles tous les liens des categorie et creer le fichier complet de tous les livres
 
 def main(url):
     all_products = []

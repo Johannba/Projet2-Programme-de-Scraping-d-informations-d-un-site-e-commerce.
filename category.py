@@ -6,7 +6,6 @@ import requests
 
 # Récupération de l'url d'un livre
 
-
 def get_category_book_urls(category_urls):
     category_book_urls = []
     for category_url in category_urls:
@@ -34,7 +33,7 @@ def number_of_page_category(category_url):
     return number_of_page
 
 
-# Boucle nombre de page
+# Boucle des pages d'une categories
 def get_category_urls(category_url):
     category_urls = []
     # boucle avec le nombre page des urls de la category
@@ -49,7 +48,6 @@ def get_category_urls(category_url):
     return category_urls
 
 # creations du dossier d'une categories
-
 
 def scrap_category(category_url):
     books_infos = []
@@ -66,7 +64,7 @@ def scrap_category(category_url):
         path.mkdir(parents=True, exist_ok=True)
     return name_dossier, books_infos
 
-
+#Creation du dossier csv
 def folder_category(category_url):
     call_fontion = scrap_category(category_url)
     name = call_fontion[0]
